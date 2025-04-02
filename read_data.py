@@ -10,8 +10,8 @@ PORT = 3000
 # Cấu hình âm thanh
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
-RATE = 16000
-CHUNK = 1024
+RATE = 8000
+CHUNK = 8000
 
 # Khởi tạo socket TCP server
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
