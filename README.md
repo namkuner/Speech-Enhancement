@@ -4,24 +4,26 @@ Speech Enhancement là một dự án cải thiện chất lượng âm thanh b�
 
 ## 1. Yêu cầu phần cứng
 - **ESP32**
-- **Microphone I2S**
-- **Loa (tùy chọn)**
+- **Microphone I2S INM441**
 - **Cáp USB để nạp code**
 
 ## 2. Yêu cầu phần mềm
-- **Arduino IDE** (hoặc PlatformIO)
-- **Python 3.x**
+- **Arduino IDE**
+- **Python 3.10**
 - Các thư viện cần thiết:
   - `numpy`
   - `scipy`
   - `sounddevice`
   - `flask`
+  - `pydub`
 
 ## 3. Cài đặt ESP32
 1. Cài đặt thư viện ESP32 trên Arduino IDE.
 2. Thêm thư viện I2S và WiFi cho ESP32:
    - `ESP8266Audio`
    - `WiFi.h`
+   - `Tensorflow_ESP32`
+   - `arduino_FFT`
 3. Flash code vào ESP32 thông qua Arduino IDE hoặc PlatformIO.
 
 ## 4. Cài đặt server Python
@@ -38,9 +40,12 @@ Speech Enhancement là một dự án cải thiện chất lượng âm thanh b�
    ```bash
    python server.py
    ```
-
+4. Mở ArduinoIDE, gắn cáp ESP32 vào máy tính, chạy file:
+   ```bash
+   app.ino
+   ```
 ## 5. Kết nối ESP32 với Server
-- ESP32 sẽ gửi dữ liệu âm thanh thu được lên server thông qua giao thức HTTP hoặc WebSocket.
+- ESP32 sẽ gửi dữ liệu âm thanh thu được lên server thông qua WebSocket.
 - Server sẽ xử lý dữ liệu và trả về kết quả đã cải thiện.
 
 ## 6. Kiểm tra hoạt động
