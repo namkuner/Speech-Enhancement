@@ -1,4 +1,10 @@
 # Speech Enhancement
+# Demo
+
+<audio controls>
+  <source src="noise_audio.mp3" type="audio/mpeg">
+  Trình duyệt của bạn không hỗ trợ audio.
+</audio>
 
 Speech Enhancement là một dự án cải thiện chất lượng âm thanh bằng cách sử dụng ESP32 và server Python.
 
@@ -63,3 +69,5 @@ Nếu bạn có cải tiến hoặc phát hiện lỗi, vui lòng mở Pull Requ
 
 ---
 Happy coding! 🚀
+
+
