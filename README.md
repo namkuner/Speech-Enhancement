@@ -1,13 +1,12 @@
 # Speech Enhancement
+Dự án thực hiện lọc nhiễu trực tiếp qua ESP32. Có nghĩa là ESP32 tự xử lí dữ liệu và chạy model, chứ không dùng bất kì việc gọi server nào. Tuy model không có thể realtime được (có thể tối ưu thêm để realtime) nhưng đây là tiền đề để nhúng các model deeplearning vào các chíp nhúng rẻ tiền như ESP để xử lí. 
 # Demo
-
-<audio controls>
-  <source src="noise_audio.mp3" type="audio/mpeg">
-  Trình duyệt của bạn không hỗ trợ audio.
-</audio>
-
-Speech Enhancement là một dự án cải thiện chất lượng âm thanh bằng cách sử dụng ESP32 và server Python.
-
+## Âm thanh nhiễu
+https://github.com/user-attachments/assets/e9d0ca52-550a-4b3e-8d2f-82887ad8a16b
+## Âm thanh sau khi lọc : ở đây trong bộ dữ liệu mình chỉ train với nhiễu vỗ tay, nên những nhiễu khác không có hiệu quả.
+https://github.com/user-attachments/assets/d34ff183-316d-4e37-9d69-34f83ccb781c
+## Video demo gốc
+[![Xem video qua youtube](https://img.youtube.com/vi/6oeu9N1jf5g/maxresdefault.jpg)](https://www.youtube.com/watch?v=6oeu9N1jf5g)
 ## 1. Yêu cầu phần cứng
 - **ESP32**
 - **Microphone I2S INM441**
@@ -16,11 +15,10 @@ Speech Enhancement là một dự án cải thiện chất lượng âm thanh b�
 ## 2. Yêu cầu phần mềm
 - **Arduino IDE**
 - **Python 3.10**
-- Các thư viện cần thiết:
+- Các thư viện cần thiết trên python:
   - `numpy`
   - `scipy`
   - `sounddevice`
-  - `flask`
   - `pydub`
 
 ## 3. Cài đặt ESP32
@@ -30,6 +28,7 @@ Speech Enhancement là một dự án cải thiện chất lượng âm thanh b�
    - `WiFi.h`
    - `Tensorflow_ESP32`
    - `arduino_FFT`
+   - `TensorFlow_ESP32`
 3. Flash code vào ESP32 thông qua Arduino IDE hoặc PlatformIO.
 
 ## 4. Cài đặt server Python
