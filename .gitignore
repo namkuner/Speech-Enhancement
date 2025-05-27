@@ -2,3 +2,14 @@ audio
 datasets.zip
 datasets
 res_audio.wav
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+/.vscode
+/.idea
+
+test.py
+read_date.py
