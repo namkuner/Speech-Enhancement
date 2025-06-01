@@ -20,6 +20,7 @@
 
     <div ref="waveformContainer" class="waveform"></div>
     <div ref="timeline"></div>
+    <div ref="waveSpectrogram" class="waveSpectrogram"></div>
   </div>
 </template>
 
@@ -27,8 +28,8 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import WaveSurfer from "wavesurfer.js";
 import TimelinePlugin from "wavesurfer.js/dist/plugin/wavesurfer.timeline.js";
-// import Spectrogram from "wavesurfer.js/dist/plugins/spectrogram.esm.js";
-
+import Spectrogram from "wavesurfer.js/dist/plugin/wavesurfer.spectrogram.js";
+import colormap from "colormap";
 const props = defineProps({
   readyForReceive: {
     type: Boolean,
@@ -45,7 +46,7 @@ const CHUNK_SIZE = 1024;
 const FIXED_MAX_AMPLITUDE = 0.8;
 const wavesurfer = ref<WaveSurfer | null>(null);
 const timeline = ref(null);
-
+const waveSpectrogram = ref<HTMLElement | null>(null);
 const waveformContainer = ref<HTMLElement | null>(null);
 const audioContext = ref<AudioContext | null>(null);
 const audioChunks = ref<Float32Array>(new Float32Array());
@@ -56,13 +57,39 @@ const reset = () => {
     audioChunks.value = new Float32Array();
     wavesurfer.value?.empty();
     isInitialized.value = false;
+
+    if (wavesurfer.value.getActivePlugins().spectrogram) {
+      wavesurfer.value?.destroyPlugin("spectrogram");
+    }
   }
+};
+
+const showSpectrogram = async () => {
+  if (!wavesurfer.value) return;
+  if (wavesurfer.value.getActivePlugins().spectrogram) {
+    wavesurfer.value?.destroyPlugin("spectrogram");
+  }
+
+  wavesurfer.value.addPlugin(
+    Spectrogram.create({
+      wavesurfer: wavesurfer.value,
+      container: waveSpectrogram.value as HTMLElement,
+      labels: true,
+      frequencyMax: 4000,
+      frequencyMin: 0,
+      deferInit: true,
+      colorMap: colormap({
+        colormap: "hot",
+        nshades: 256,
+        format: "float",
+      }),
+    })
+  );
+  wavesurfer.value?.initPlugin("spectrogram");
 };
 
 const play = async () => {
   if (!wavesurfer.value) return;
-  console.log(wavesurfer.value);
-  console.log(audioChunks.value);
   wavesurfer.value.stop();
   wavesurfer.value.seekTo(0);
   await wavesurfer.value.play();
@@ -125,6 +152,9 @@ onMounted(() => {
   }
   function receiveBytes(data: number[]) {
     if (!props.readyForReceive) return;
+    if (wavesurfer.value?.getActivePlugins().spectrogram) {
+      wavesurfer.value?.destroyPlugin("spectrogram");
+    }
 
     const newData = new Float32Array(data);
     const merged = new Float32Array(audioChunks.value.length + newData.length);
@@ -145,6 +175,7 @@ onUnmounted(() => {
 
 defineExpose({
   reset,
+  showSpectrogram,
 });
 </script>
 

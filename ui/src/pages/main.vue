@@ -13,6 +13,13 @@ const reset = () => {
   audioVisualizer.value?.reset();
   rawAudioVisualizer.value?.reset();
 };
+
+const showSpectrogram = () => {
+  readyForReceive.value = false;
+  audioVisualizer.value?.showSpectrogram();
+  rawAudioVisualizer.value?.showSpectrogram();
+};
+
 const stopReceive = () => {
   readyForReceive.value = false;
 };
@@ -57,6 +64,7 @@ const continueReceive = () => {
         <el-button
           type="primary"
           large
+          @click="showSpectrogram"
           plain
           :disabled="readyForReceive"
           size="large"
