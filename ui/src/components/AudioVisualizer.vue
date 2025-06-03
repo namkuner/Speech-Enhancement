@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 16px">
+  <div style="padding-right: 16px; padding-left: 16px">
     <div
       style="display: flex; justify-content: space-between; align-items: center"
     >
@@ -77,7 +77,7 @@ const showSpectrogram = async () => {
       labels: true,
       frequencyMax: 4000,
       frequencyMin: 0,
-      fftSamples: 512,
+      fftSamples: 256,
       deferInit: true,
       colorMap: colormap({
         colormap: "summer",
@@ -126,7 +126,7 @@ onMounted(() => {
     scrollParent: true, // Cho phép scroll ngang
     minPxPerSec: 100, // Độ rộng tối thiểu mỗi giây
     fillParent: false, // Không tự động co dãn
-    height: 200,
+    height: 128,
     barWidth: 2,
     partialRender: true,
     normalize: false,
