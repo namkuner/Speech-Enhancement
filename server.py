@@ -7,6 +7,7 @@ import pyaudio
 
 from model import unet_3blocks
 from processdata import prepare_data, istft
+import ui
 
 # Server settings
 HOST = '0.0.0.0'  # Lắng nghe trên tất cả các interface
@@ -39,7 +40,8 @@ checkpoint_file = "checkpoints/model_epoch_41.weights.h5"
 model = unet_3blocks()
 model.load_weights(checkpoint_file)
 
-
+def main0():
+    ui.run()
 # def process_audio():
 #     """Process audio data from raw queue and put into processed queue"""
 #     while True:
@@ -72,15 +74,18 @@ def process_audio():
             # Convert to numpy array for processing
             samples = np.frombuffer(raw_data, dtype=np.int16)
 
+
             # normalize samples
             samples = samples/32768.0  # Normalize to [-1, 1]
-
+            ui.send_bytes_raw(samples.tolist())
             data = prepare_data(samples, sample_rate=SAMPLE_RATE)
             output = model(data,training=False)
             res = istft(output)
+
+            ui.send_bytes(res[0].tolist())
             res = res * 32768.0  # Scale back to original range
             res = np.clip(res, -32768, 32767).astype(np.int16)  # Clip to int16 range
-            print(res)
+
             # Put processed data into processed queue
             processed_audio_queue.put(res.tobytes())
 
@@ -137,6 +142,8 @@ def receive_audio(conn):
 
 
 def main():
+    ui_thread = threading.Thread(target=main0, args=())
+    ui_thread.start()
     # Create socket server
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((HOST, PORT))
@@ -149,6 +156,8 @@ def main():
     # Start processing and playing/saving threads
     processing_thread = threading.Thread(target=process_audio, daemon=True)
     playing_saving_thread = threading.Thread(target=play_and_save_audio, daemon=True)
+
+
     processing_thread.start()
     playing_saving_thread.start()
 
