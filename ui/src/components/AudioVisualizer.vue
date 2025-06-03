@@ -77,9 +77,10 @@ const showSpectrogram = async () => {
       labels: true,
       frequencyMax: 4000,
       frequencyMin: 0,
+      fftSamples: 1024,
       deferInit: true,
       colorMap: colormap({
-        colormap: "hot",
+        colormap: "summer",
         nshades: 256,
         format: "float",
       }),
